@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     git \
     ocl-icd-opencl-dev \
+    # Uses RustiCL
     mesa-opencl-icd \
     libelf-dev \
     libffi-dev \
@@ -30,10 +31,8 @@ WORKDIR /workspace
 # Builds DPCPP from source
 RUN git clone https://github.com/intel/llvm.git -b sycl --depth 1
 WORKDIR /workspace/llvm
-RUN python3 buildbot/configure.py --opencl \
-    --cmake-opt="-DLLVM_TARGETS_TO_BUILD=AArch64" \
-    --cmake-opt="-DLLVM_BUILD_TOOLS=OFF" && \
-    python3 buildbot/compile.py
+RUN python3 buildbot/configure.py --cmake-opt="-DCMAKE_BUILD_TYPE=Release"
+RUN python3 buildbot/compile.py
 
 RUN rm -rf /workspace/llvm/llvm /workspace/llvm/clang /workspace/llvm/lld
 
