@@ -24,6 +24,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libffi-dev \
     libxml2-dev \
     zlib1g-dev \
+    autoconf \
+    automake \
+    libtool \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
