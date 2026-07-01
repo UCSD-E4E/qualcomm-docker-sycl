@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     clang \
     libclc-18-dev \
     spirv-tools \
+    pkg-config \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
