@@ -42,26 +42,26 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     spirv-tools \
     pkg-config \
     libllvmspirvlib-18-dev \
-    libwayland-dev \
-    wayland-protocols \
-    libwayland-egl-backend-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
 
 # Builds Mesa from source to enable KGSL support
-# Uses mesa 24.1.0
 RUN git clone https://gitlab.freedesktop.org/mesa/mesa.git -b mesa-24.1.0 --depth 1
 WORKDIR /workspace/mesa
-# Note -Dfreedreno-kmds=msm,kgsl to include base
+
 RUN meson setup build \
     -Dgallium-rusticl=true \
     -Dgallium-drivers=freedreno \
     -Dfreedreno-kmds=msm,kgsl \
+    '-Dplatforms=[]' \
+    -Dglx=disabled \
+    -Degl=disabled \
+    -Dgbm=disabled \
     -Dvulkan-drivers= \
     -Dbuildtype=release \
     --prefix=/usr
-RUN ninja -C build Install
+RUN ninja -C build install
 
 RUN rm -rf /workspace/mesa
 
