@@ -34,11 +34,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libdrm-dev \
     rustc \
     cargo \
-    rust-bindgen \
+    bindgen \
     llvm-dev \
     libclang-dev \
     clang \
-    libclc-dev \
+    libclc-18-dev \
     spirv-tools \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
