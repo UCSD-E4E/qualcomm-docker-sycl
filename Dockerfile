@@ -41,6 +41,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libclc-18-dev \
     spirv-tools \
     pkg-config \
+    libllvmspirvlib-18-dev \
+    libwayland-dev \
+    wayland-protocols \
+    libwayland-egl-backend-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
