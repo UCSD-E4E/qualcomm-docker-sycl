@@ -4,4 +4,6 @@ Docker image for Qualcomm Rubik Pi 3 with Intel DPC++ SYCL support, based on [ka
 
 Build with `docker buildx build --platform linux/arm64 -t qualcomm-docker-sycl:latest .`
 
-Run with `docker run --rm -it --device=/dev/kgsl-3d0 --device=/dev/dri <image>`
+Run with `docker run --rm -it --device=/dev/dri qualcomm-docker-sycl:latest`
+
+> Note: Requires `--device=/dev/kgsl-3d0` if device using the KGSL kernel driver instead of MSM

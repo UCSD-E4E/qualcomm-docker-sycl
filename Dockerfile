@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     autoconf \
     automake \
     libtool \
+    vim \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
