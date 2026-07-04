@@ -26,12 +26,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
     libtool \
     vim \
-    # --- MESA & RUSTICL DEPENDENCIES ---
     meson \
     bison \
     flex \
     python3-mako \
+    pkg-config \
     libdrm-dev \
+    libudev-dev \
     rustc \
     cargo \
     bindgen \
@@ -40,7 +41,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     clang \
     libclc-18-dev \
     spirv-tools \
-    pkg-config \
     libllvmspirvlib-18-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -57,12 +57,12 @@ RUN meson setup build \
     '-Dplatforms=[]' \
     -Dglx=disabled \
     -Degl=disabled \
-    -Dgbm=disabled \
     -Dvulkan-drivers= \
     -Dbuildtype=release \
-    --prefix=/usr
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=lib/aarch64-linux-gnu
 RUN ninja -C build install
-
 RUN rm -rf /workspace/mesa
 
 WORKDIR /workspace
@@ -71,7 +71,7 @@ WORKDIR /workspace
 RUN git clone https://github.com/intel/llvm.git -b sycl --depth 1
 WORKDIR /workspace/llvm
 RUN python3 buildbot/configure.py --cmake-opt="-DCMAKE_BUILD_TYPE=Release"
-RUN python3 buildbot/compile.py
+RUN python3 buildbot/compile.py -j 4
 
 RUN rm -rf /workspace/llvm/llvm /workspace/llvm/clang /workspace/llvm/lld
 
