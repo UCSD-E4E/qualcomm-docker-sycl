@@ -71,7 +71,7 @@ WORKDIR /workspace
 RUN git clone https://github.com/intel/llvm.git -b sycl --depth 1
 WORKDIR /workspace/llvm
 RUN python3 buildbot/configure.py --cmake-opt="-DCMAKE_BUILD_TYPE=Release"
-RUN python3 buildbot/compile.py -j 4
+RUN python3 buildbot/compile.py
 
 RUN rm -rf /workspace/llvm/llvm /workspace/llvm/clang /workspace/llvm/lld
 
