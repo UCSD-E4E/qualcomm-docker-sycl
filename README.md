@@ -2,8 +2,10 @@
 
 Docker image for Qualcomm Rubik Pi 3 with Intel DPC++ SYCL support, based on [kastnerrg/qualcomm-docker-base](https://github.com/KastnerRG/qualcomm-docker-image)
 
-Build with `docker buildx build --platform linux/arm64 -t qualcomm-docker-sycl:latest .`
+Build with `docker buildx build --platform linux/arm64 -t qualcomm-docker-sycl:<tag> .`
 
-Run with `docker run --rm -it --device=/dev/dri ghcr.io/ucsd-e4e/qualcomm-docker-sycl:latest`
+For MSM kernel driver, run with `docker run --rm -it --device=/dev/dri ghcr.io/ucsd-e4e/qualcomm-docker-sycl:msm`
 
-> Note: Requires `--device=/dev/kgsl-3d0` if device using the KGSL kernel driver instead of MSM
+For KGSL kernel driver, run with `docker run --rm -it --device=/dev/kgsl-3d0 --device=/dev/dri ghcr.io/ucsd-e4e/qualcomm-docker-sycl:latest`
+
+> Note: KGSL container currently does not function due to SPIR-V ingestion issues with the Adreno OpenCL driver
