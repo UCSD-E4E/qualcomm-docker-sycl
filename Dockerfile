@@ -3,13 +3,13 @@ FROM --platform=linux/arm64 ghcr.io/kastnerrg/qualcomm-docker-base:latest
 USER root
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Gets rid of Qualcomm proprietary driver as it doesn't support SPIR-V ingestion
+# Gets rid of Qualcomm propritary driver as it doesn't support SPIR-V ingestion
 RUN apt-get update && \
     apt-get remove --purge -y adreno1 && \
     apt-get autoremove -y && \
     apt-get clean
 
-# Installs dependencies for LLVM and Mesa
+# Installs some dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     cmake \
@@ -18,6 +18,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     git \
     ocl-icd-opencl-dev \
+    # Uses RustiCL
+    mesa-opencl-icd \
     libelf-dev \
     libffi-dev \
     libxml2-dev \
@@ -26,44 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
     libtool \
     vim \
-    meson \
-    bison \
-    flex \
-    python3-mako \
-    pkg-config \
-    libdrm-dev \
-    libudev-dev \
-    rustc \
-    cargo \
-    bindgen \
-    llvm-dev \
-    libclang-dev \
-    clang \
-    libclc-18-dev \
-    spirv-tools \
-    libllvmspirvlib-18-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /workspace
-
-# Builds Mesa from source to enable KGSL support
-RUN git clone https://gitlab.freedesktop.org/mesa/mesa.git -b mesa-24.1.0 --depth 1
-WORKDIR /workspace/mesa
-
-RUN meson setup build \
-    -Dgallium-rusticl=true \
-    -Dgallium-drivers=freedreno \
-    -Dfreedreno-kmds=msm,kgsl \
-    '-Dplatforms=[]' \
-    -Dglx=disabled \
-    -Degl=disabled \
-    -Dvulkan-drivers= \
-    -Dbuildtype=release \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --libdir=lib/aarch64-linux-gnu
-RUN ninja -C build install
-RUN rm -rf /workspace/mesa
 
 WORKDIR /workspace
 
