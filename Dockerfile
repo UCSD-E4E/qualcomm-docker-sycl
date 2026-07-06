@@ -80,6 +80,12 @@ RUN git clone https://github.com/KhronosGroup/Vulkan-Headers.git --depth 1 /tmp/
     ninja -C /tmp/vulkan-headers/build install && \
     rm -rf /tmp/vulkan-headers
 
+# Adds missing SPIR-V headers
+RUN git clone https://github.com/KhronosGroup/SPIRV-Headers.git --depth 1 /tmp/spirv-headers && \
+    cmake -S /tmp/spirv-headers -B /tmp/spirv-headers/build -G Ninja -DCMAKE_INSTALL_PREFIX=/usr && \
+    ninja -C /tmp/spirv-headers/build install && \
+    rm -rf /tmp/spirv-headers
+    
 RUN mkdir build && cd build && \
     cmake -G Ninja .. \
         -DCMAKE_BUILD_TYPE=Release \
