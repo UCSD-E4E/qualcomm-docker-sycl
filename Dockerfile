@@ -73,6 +73,13 @@ RUN git clone https://github.com/google/clspv.git . && \
 # Build AdaptiveCpp with SSCP
 WORKDIR /workspace/AdaptiveCpp
 RUN git clone https://github.com/AdaptiveCpp/AdaptiveCpp.git --depth 1 .
+
+# Vulkan headers source for missing headers
+RUN git clone https://github.com/KhronosGroup/Vulkan-Headers.git --depth 1 /tmp/vulkan-headers && \
+    cmake -S /tmp/vulkan-headers -B /tmp/vulkan-headers/build -G Ninja -DCMAKE_INSTALL_PREFIX=/usr && \
+    ninja -C /tmp/vulkan-headers/build install && \
+    rm -rf /tmp/vulkan-headers
+
 RUN mkdir build && cd build && \
     cmake -G Ninja .. \
         -DCMAKE_BUILD_TYPE=Release \
