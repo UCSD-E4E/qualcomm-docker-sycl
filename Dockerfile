@@ -69,6 +69,8 @@ RUN mkdir build && cd build && \
         -DCMAKE_CXX_COMPILER=clang++-18 \
         -DCMAKE_C_COMPILER=clang-18 \
         -DWITH_SSCP_COMPILER=ON && \
+        -DWITH_VULKAN_BACKEND=ON \
+        -DACPP_LLD_PATH=/usr/lib/llvm-18/bin/ld.lld && \
     ninja install
 
 RUN rm -rf /workspace/AdaptiveCpp
