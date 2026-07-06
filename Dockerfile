@@ -28,10 +28,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     vulkan-tools \
     glslang-tools \
     spirv-tools \
-    # AdaptiveCpp strictly requires LLVM/Clang and Boost Fiber/Context
     llvm-18-dev \
     clang-18 \
     libclang-18-dev \
+    libomp-18-dev \
+    lld-18 \
     libboost-all-dev \
     vim \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
