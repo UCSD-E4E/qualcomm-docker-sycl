@@ -6,6 +6,6 @@ Build with `docker buildx build --platform linux/arm64 -t qualcomm-docker-sycl:<
 
 For MSM kernel driver, run with `docker run --rm -it --device=/dev/dri ghcr.io/ucsd-e4e/qualcomm-docker-sycl:msm`
 
-For KGSL kernel driver, run with `docker run --rm -it --device=/dev/kgsl-3d0 --device=/dev/dri ghcr.io/ucsd-e4e/qualcomm-docker-sycl:latest`
+For KGSL kernel driver, run with `docker run --rm -it --device=/dev/kgsl-3d0 --device=/dev/dri --device=/dev/dma_heap/system ghcr.io/ucsd-e4e/qualcomm-docker-sycl:latest`
 
 > Note: KGSL container currently does not function due to SPIR-V ingestion issues with the Adreno OpenCL driver
