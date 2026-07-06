@@ -42,6 +42,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libclc-18-dev \
     spirv-tools \
     libllvmspirvlib-18-dev \
+    libvulkan-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
@@ -52,12 +53,12 @@ WORKDIR /workspace/mesa
 
 RUN meson setup build \
     -Dgallium-rusticl=true \
-    -Dgallium-drivers=freedreno \
+    -Dgallium-drivers=freedreno,zink \
+    -Dvulkan-drivers=freedreno \
     -Dfreedreno-kmds=msm,kgsl \
     '-Dplatforms=[]' \
     -Dglx=disabled \
     -Degl=disabled \
-    -Dvulkan-drivers= \
     -Dbuildtype=release \
     --prefix=/usr \
     --sysconfdir=/etc \
