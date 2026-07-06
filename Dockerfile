@@ -60,7 +60,17 @@ RUN rm -rf /workspace/mesa
 
 ENV VK_ICD_FILENAMES="/usr/share/vulkan/icd.d/freedreno_icd.aarch64.json"
 
-# Build AdaptiveCpp with SSCP Enabled
+# Build clspv from source
+WORKDIR /workspace/clspv
+RUN git clone https://github.com/google/clspv.git . && \
+    python3 utils/fetch_sources.py && \
+    mkdir build && cd build && \
+    cmake -G Ninja .. \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCLSPV_BUILD_TESTS=OFF && \
+    ninja install
+
+# Build AdaptiveCpp with SSCP
 WORKDIR /workspace/AdaptiveCpp
 RUN git clone https://github.com/AdaptiveCpp/AdaptiveCpp.git --depth 1 .
 RUN mkdir build && cd build && \
@@ -72,8 +82,8 @@ RUN mkdir build && cd build && \
         -DWITH_VULKAN_BACKEND=ON \
         -DACPP_LLD_PATH=/usr/lib/llvm-18/bin/ld.lld && \
     ninja install
-
-RUN rm -rf /workspace/AdaptiveCpp
+    
+RUN rm -rf /workspace/AdaptiveCpp /workspace/clspv
 
 WORKDIR /workspace
 CMD ["/bin/bash"]
