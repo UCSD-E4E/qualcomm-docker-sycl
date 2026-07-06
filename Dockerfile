@@ -3,13 +3,13 @@ FROM --platform=linux/arm64 ghcr.io/kastnerrg/qualcomm-docker-base:latest
 USER root
 ENV DEBIAN_FRONTEND=noninteractive
 
-# 1. Gets rid of KGSL drivers as no SPIR-V
+# Gets rid of KGSL drivers as no SPIR-V
 RUN apt-get update && \
     apt-get remove --purge -y adreno1 && \
     apt-get autoremove -y && \
     apt-get clean
 
-# 2. Dependencies
+# Dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     cmake \
@@ -28,13 +28,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     vulkan-tools \
     glslang-tools \
     spirv-tools \
+    # AdaptiveCpp strictly requires LLVM/Clang and Boost Fiber/Context
+    llvm-18-dev \
+    clang-18 \
+    libclang-18-dev \
+    libboost-all-dev \
     vim \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
 
-# 3. Build Mesa strictly for Turnip (Vulkan) with KGSL support
-# Disabling Gallium/Rusticl for now for stability
+# Build Mesa strictly for Turnip with KGSL support
 RUN git clone https://gitlab.freedesktop.org/mesa/mesa.git -b mesa-24.1.0 --depth 1
 WORKDIR /workspace/mesa
 
@@ -54,6 +58,19 @@ RUN ninja -C build install
 RUN rm -rf /workspace/mesa
 
 ENV VK_ICD_FILENAMES="/usr/share/vulkan/icd.d/freedreno_icd.aarch64.json"
+
+# Build AdaptiveCpp with SSCP Enabled
+WORKDIR /workspace/AdaptiveCpp
+RUN git clone https://github.com/AdaptiveCpp/AdaptiveCpp.git --depth 1 .
+RUN mkdir build && cd build && \
+    cmake -G Ninja .. \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_CXX_COMPILER=clang++-18 \
+        -DCMAKE_C_COMPILER=clang-18 \
+        -DWITH_SSCP_COMPILER=ON && \
+    ninja install
+
+RUN rm -rf /workspace/AdaptiveCpp
 
 WORKDIR /workspace
 CMD ["/bin/bash"]
