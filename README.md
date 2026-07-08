@@ -1,4 +1,4 @@
-# Qualcomm Docker Sycl
+# Qualcomm Docker SYCL
 
 Docker image for Qualcomm Rubik Pi 3 with SYCL support, based on [kastnerrg/qualcomm-docker-base](https://github.com/KastnerRG/qualcomm-docker-image)
 
