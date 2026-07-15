@@ -97,6 +97,7 @@ RUN cmake .. \
     -DWITH_OPENAL=OFF \
     -DWITH_FREESTYLE=OFF \
     -DWITH_CPU_SSE=OFF \
+    -DWITH_CPU_SIMD=OFF \
     -DWITH_CYCLES_OPTIMIZED_KERNELS=OFF
 
 RUN make -j$(nproc) && make install
