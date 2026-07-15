@@ -99,7 +99,7 @@ RUN cmake .. \
     -DWITH_CPU_SSE=OFF \
     -DWITH_CYCLES_OPTIMIZED_KERNELS=OFF
 
-RUN make && make install
+RUN make -j$(nproc) && make install
 
 RUN cp -a /src/blender/build/bin /opt/blender && \
     rm -rf /src/blender
