@@ -11,3 +11,5 @@ For MSM kernel driver, run with `docker run --rm -it --device=/dev/dri ghcr.io/u
 For KGSL kernel driver, run with `docker run --rm -it --device=/dev/kgsl-3d0 --device=/dev/dri --device=/dev/dma_heap/system ghcr.io/ucsd-e4e/qualcomm-docker-sycl:latest`
 
 > Note: KGSL container uses AdaptiveC++ and targets Freedreno Turnip in Vulkan due to SPIR-V ingestion issues with the Adreno OpenCL driver, requires working Vulkan natively on device
+
+`mainline` image uses ubuntu 24.04 as base image instead
