@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main", "msm", "kgsl" ]
+    branches: [ "main", "msm", "kgsl", "mainline" ]
 
 jobs:
   build:
